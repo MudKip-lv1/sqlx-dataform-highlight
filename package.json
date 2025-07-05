@@ -1,0 +1,30 @@
+{
+  "name": "sqlx-dataform-highlight",
+  "displayName": "sqlx-dataform-highlight",
+  "description": "Syntax highlighting for SQLX in Dataform projects.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MudKip-lv1/sqlx-dataform-highlight.git"
+  },
+  "contributes": {
+    "languages": [{
+      "id": "sqlx",
+      "aliases": ["SQLX for Dataform", "sqlx"],
+      "extensions": [".sqlx"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "sqlx",
+      "scopeName": "source.sqlx",
+      "path": "./syntaxes/sqlx.tmLanguage.json"
+    }]
+  }
+}
