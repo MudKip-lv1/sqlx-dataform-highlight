@@ -1,6 +1,6 @@
 {
   "name": "sqlx-dataform-highlight",
-  "displayName": "sqlx-dataform-highlight",
+  "displayName": "SQLX(Dataform)",
   "description": "Syntax highlighting for SQLX in Dataform projects.",
   "version": "0.0.1",
   "engines": {
