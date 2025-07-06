@@ -84,7 +84,7 @@ Dataform/SQLXの進化やBigQuery拡張にも随時対応予定です。
 A: はい、完全に無料です。
 
 **Q: どのようにバグを報告できますか？**  
-A: GitHubの[リポジトリ](https://github.com/your-repo/sqlx-dataform-highlight)でイシューを作成してください。
+A: GitHubの[リポジトリ](https://github.com/MudKip-lv1/sqlx-dataform-highlight)でイシューを作成してください。
 
 **Q: 機能追加のリクエストはどこにすればいいですか？**  
 A: 同じくGitHubのリポジトリでイシューを作成するか、プルリクエストを送ってください。
@@ -116,7 +116,7 @@ MIT License. 詳細は[LICENSE](LICENSE)ファイルを参照してください�
 
 ## 連絡先
 
-何か質問があれば、気軽に[メール](mailto:your-email@example.com)してください。
+何か質問があれば、気軽に[メール](mailto:aaron.ventura0321@gmail.com)してください。
 
 ---
 
