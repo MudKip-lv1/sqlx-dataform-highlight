@@ -2,7 +2,7 @@
   "name": "sqlx-dataform-highlight",
   "displayName": "SQLX(Dataform)",
   "description": "Syntax highlighting for SQLX in Dataform projects.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "Aaron_Ventura",
   "engines": {
     "vscode": "^1.101.0"
