@@ -1,0 +1,76 @@
+-- ユーザーイベントを日次で集計し、行動分析に使うテーブル
+config {
+  type: "incremental",
+  schema: "user_behavior",
+  name: "user_event_summary",
+  tags: ["daily", "event", "incremental"],
+  materialized: "incremental",
+  description: "ユーザーの日次イベント要約データ（購入・ログイン・広告クリックなど）"
+}
+
+-- メインクエリ
+SELECT
+  e.user_id,
+  e.event_date,
+  e.platform,
+  e.app_version,
+  e.country,
+  e.device_category,
+
+  COUNTIF(e.event_name = 'login') AS login_count,
+  COUNTIF(e.event_name = 'purchase') AS purchase_count,
+  COUNTIF(e.event_name = 'ad_click') AS ad_clicks,
+
+  MAX(IF(e.event_name = 'purchase', e.revenue, NULL)) AS last_purchase_revenue,
+
+  -- ユーザータグ
+  CASE
+    WHEN COUNTIF(e.event_name = 'purchase') > 0 THEN 'buyer'
+    WHEN COUNTIF(e.event_name = 'login') > 3 THEN 'active'
+    ELSE 'passive'
+  END AS user_status,
+
+  -- 最終購入日（サブクエリ）
+  (
+    SELECT MAX(p.event_date)
+    FROM {{ ref("purchase_events") }} p
+    WHERE p.user_id = e.user_id
+  ) AS last_purchase_date,
+
+  CURRENT_TIMESTAMP() AS loaded_at
+
+FROM
+  {{ ref("events_table") }} e
+
+WHERE
+  -- インクリメンタル処理
+  event_date >= (
+    SELECT IFNULL(MAX(event_date), DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY))
+    FROM {{ this }}
+  )
+
+  AND e.event_name IN ('login', 'purchase', 'ad_click')
+  AND e.user_id IS NOT NULL
+
+GROUP BY
+  e.user_id, e.event_date, e.platform, e.app_version, e.country, e.device_category;
+
+-- 境界テスト
+/*
+  インクリメンタル条件はこの行で確認
+  {{ this }} テーブルが空のときは30日前から取得
+*/
+
+-- テーブル結合の例
+-- 商品マスタとJOINして購入の単価平均を取ることもできる
+-- （今回はコメントアウト）
+/*
+LEFT JOIN {{ ref("product_master") }} pm
+  ON e.product_id = pm.product_id
+*/
+
+-- テストデータ（ダミー行）
+UNION ALL
+SELECT
+  'test_user', CURRENT_DATE(), 'ios', 'v1.2.3', 'JP', 'mobile',
+  1, 2, 0, 300.0, 'buyer', CURRENT_DATE(), CURRENT_TIMESTAMP()
